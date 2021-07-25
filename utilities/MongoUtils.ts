@@ -17,27 +17,18 @@ async function connectToDatabase() {
   return db;
 }
 
-export async function insertIntoCollection(
-  collectionName: string,
-  newDocuments: any
-) {
+export async function deleteFromCollection(collectionName: string, query: any) {
   try {
     if (uri === undefined) {
       throw "URI is undefined";
-    }
-    if (newDocuments === undefined) {
-      throw "newDocuments is undefined";
     }
 
     const database = await connectToDatabase();
     const collection = database.collection(collectionName);
 
-    await collection.insertMany(
-      Array.isArray(newDocuments) ? newDocuments : [newDocuments],
-      { ordered: true }
-    );
+    await collection.deleteOne(query);
 
-    return { message: `Sucessfully Added new documents into ${collection}` };
+    return { message: `Sucessfully deleted document from ${collection}` };
   } catch (e) {
     console.error(e);
     throw e;

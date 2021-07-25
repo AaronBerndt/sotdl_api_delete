@@ -1,6 +1,6 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
+import { deleteFromCollection } from "../utilities/MongoUtils";
 import microCors from "micro-cors";
-import { insertIntoCollection } from "../utilities/MongoUtils";
 
 const cors = microCors();
 
@@ -9,10 +9,16 @@ const handler = async (request: VercelRequest, response: VercelResponse) => {
     if (request.method === "OPTIONS") {
       return response.status(200).end();
     }
+
+    const id: any = request.query._id;
+
     const { documents } = request.body.data;
-    const data = await insertIntoCollection("characters", documents);
+    console.log(documents);
+
+    const data = await deleteFromCollection(("characters", { _id: new ObjectId(id) });
     response.status(200).send(data);
   } catch (e) {
+    console.log(e);
     response.status(504).send(e);
   }
 };
