@@ -1,5 +1,6 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { deleteFromCollection } from "../utilities/MongoUtils";
+import { ObjectId } from "mongodb";
 import microCors from "micro-cors";
 
 const cors = microCors();
@@ -15,7 +16,9 @@ const handler = async (request: VercelRequest, response: VercelResponse) => {
     const { documents } = request.body.data;
     console.log(documents);
 
-    const data = await deleteFromCollection(("characters", { _id: new ObjectId(id) });
+    const data = await deleteFromCollection("characters", {
+      _id: new ObjectId(id),
+    });
     response.status(200).send(data);
   } catch (e) {
     console.log(e);
