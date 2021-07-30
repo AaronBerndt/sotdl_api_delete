@@ -13,9 +13,6 @@ const handler = async (request: VercelRequest, response: VercelResponse) => {
 
     const id: any = request.query._id;
 
-    const { documents } = request.body.data;
-    console.log(documents);
-
     const data = await deleteFromCollection("characters", {
       _id: new ObjectId(id),
     });
